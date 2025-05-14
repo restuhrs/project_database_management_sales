@@ -42,6 +42,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // invalid data
     Route::get('/invalid-data', [InvalidDataController::class, 'index'])->name('invaliddata'); // Invalid Data
     Route::delete('/invalid-customer/{id}', [InvalidDataController::class, 'destroy'])->name('invaliddata.customer.destroy'); // Delete
+    Route::post('/admin/invaliddata/export', [InvalidDataController::class, 'export'])->name('invaliddata.export');
 
     // laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan'); // Laporan
