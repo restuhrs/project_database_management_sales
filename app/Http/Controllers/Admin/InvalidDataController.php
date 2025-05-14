@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CustomerExport;
 
 class InvalidDataController extends Controller
 {
@@ -15,10 +17,7 @@ class InvalidDataController extends Controller
     public function index()
     {
         $branches = Branch::all();
-
-        // Ambil daftar kota yang ada di database secara unik
-        $cities = Customer::select('kota')->distinct()->get();
-
+        $cities   = Customer::select('kota')->distinct()->get();
         $customers = Customer::with(['branch', 'salesman'])
                     ->where('progress', 'tidak valid')
                     ->get();
@@ -27,55 +26,36 @@ class InvalidDataController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Export invalid customers, hapus mereka, lalu kirim file.
      */
-    public function create()
+    public function export()
     {
-        //
-    }
+        // 1. Tentukan nama file
+        $fileName = 'customers_invalid_' . now()->format('Ymd_His') . '.xlsx';
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // 2. Generate dan simpan Excel ke storage/app/temp
+        Excel::store(new CustomerExport, "temp/{$fileName}", 'local');
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        // 3. Hapus data invalid dari database
+        Customer::where('progress', 'tidak valid')->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        // 4. Download file, lalu hapus file dari disk setelah terkirim
+        $fullPath = storage_path("app/temp/{$fileName}");
+        return response()
+            ->download($fullPath, $fileName)
+            ->deleteFileAfterSend(true);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        // Hapus data customer berdasarkan ID
-        $customers = Customer::findOrFail($id);
-        $customers->delete();
+        $customer = Customer::findOrFail($id);
+        $customer->delete();
 
-        // Mengembalikan respons JSON setelah berhasil hapus
-        return redirect()->route('admin.invaliddata')->with('deleted', 'Data berhasil dihapus!');
+        return redirect()
+            ->route('admin.invaliddata')
+            ->with('deleted', 'Data berhasil dihapus!');
     }
 }
