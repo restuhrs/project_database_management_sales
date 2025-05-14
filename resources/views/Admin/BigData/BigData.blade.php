@@ -226,7 +226,7 @@
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
                                         {{ $customers->jenis_pelanggan }}</td>
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $customers->salesman->name ?? '' }}
+                                        {{ $customers->old_salesman }}
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
                                         @if ($customers->progress)
                                             @php

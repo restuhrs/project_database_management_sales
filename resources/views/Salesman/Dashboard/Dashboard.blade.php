@@ -174,7 +174,7 @@
 
                                     <!-- Kolom 7: Salesman -->
                                     <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
-                                        {{ $customer->salesman->name ?? '' }}
+                                        {{ $customer->old_salesman }}
                                     </td>
 
                                     <!-- Kolom 7: jenis pelanggan -->

@@ -44,7 +44,7 @@
                         <img src="{{ asset('images/logo/logo.png') }}" alt="Company Logo" class="h-12 w-12 rounded-lg">
                     </div>
                     <div class="ml-4">
-                        <h1 class="text-white font-bold text-2xl">Kaizen DB</h1>
+                        <h1 class="text-white font-bold text-2xl">Kaizen DB Engine</h1>
                         <p class="text-blue-100 text-sm">Secure Login Portal</p>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         </div>
                     @endif
                 </div>
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-left">Welcome Back</h2>
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-left">Happy Utilization</h2>
 
                 <!-- Username Field -->
                 <div class="mb-6">
