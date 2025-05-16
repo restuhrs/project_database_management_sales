@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\CustomersImport;
 use App\Models\Branch;
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -18,13 +19,17 @@ class BigDataController extends Controller
     {
         $branches = Branch::all();
 
+        $salesmen = User::where('role', 'salesman')
+                ->orderBy('name', 'asc')
+                ->get();
+
         // Ambil daftar kota yang ada di database secara unik
         $cities = Customer::select('kota')->distinct()->get();
 
         // Ambil data dari model AdminSalesmanGoals
         $customers = Customer::with(['branch', 'salesman'])->get();
 
-        return view('Admin.BigData.bigdata', compact('branches', 'cities', 'customers'));
+        return view('Admin.BigData.bigdata', compact('branches', 'cities', 'customers', 'salesmen'));
     }
 
     /**
@@ -42,7 +47,7 @@ class BigDataController extends Controller
     {
         $validated = $request->validate([
             'branch_id' => 'required|string|max:255',
-            'salesman_id' => 'nullable|string|max:255',
+            'salesman_id' => 'nullable|exists:user,id',
             'nama' => 'required|string|max:255',
             'alamat' => 'nullable|string|max:255',
             'nomor_hp_1' => 'nullable|string|max:255',
