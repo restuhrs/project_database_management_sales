@@ -221,7 +221,7 @@
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->tanggal_lahir }}</td>
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->model_mobil }}</td>
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->jenis_pelanggan }}</td>
-                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->salesman->name ?? '' }}
+                            <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">{{ $customers->old_salesman }}
                             <td class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-600">
                                 @if ($customers->progress)
                                 @php
@@ -397,33 +397,6 @@
             </form>
         </div>
     </div>
-
-    <script>
-        function closeModal() {
-            document.getElementById('uploadFileModal').classList.add('hidden');
-            // reset label
-            document.getElementById('fileNameText').textContent = 'Click to upload';
-            document.getElementById('fileError').classList.add('hidden');
-            document.getElementById('uploadForm').reset();
-        }
-
-        // Optional: validasi ekstensi sebelum submit
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
-            const input = document.getElementById('dropzone-file');
-            if (!input.files.length) {
-                e.preventDefault();
-                document.getElementById('fileError').textContent = 'Silakan pilih file terlebih dahulu.';
-                document.getElementById('fileError').classList.remove('hidden');
-                return;
-            }
-            const ext = input.files[0].name.split('.').pop().toLowerCase();
-            if (!['xlsx', 'xls', 'csv'].includes(ext)) {
-                e.preventDefault();
-                document.getElementById('fileError').textContent = 'Format tidak valid. (.xlsx, .xls, .csv saja)';
-                document.getElementById('fileError').classList.remove('hidden');
-            }
-        });
-    </script>
 
     <!-- Detail Data Modal Container -->
     <div id="TampilDataModal"
@@ -809,7 +782,7 @@
                             Salesman</label>
                         <input type="text" id="old_salesman" name="old_salesman"
                             class=" block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                            placeholder="Old Salesman">
+                            placeholder="(optional)">
                     </div>
                     <!-- Submit Button -->
                     <div class="mb-2 col-span-2 sm:col-span-4">

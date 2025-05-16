@@ -352,7 +352,7 @@
     }
 
     document.querySelectorAll('.delete-customer-form').forEach(form => {
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             swalWithBootstrapButtons.fire({
                 title: "Apakah anda ingin menghapus data?",
@@ -372,7 +372,7 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Get table elements
         const table = document.getElementById('customerTable');
         const tableBody = document.getElementById('customerTableBody');
@@ -596,31 +596,31 @@
         }
 
         // Event listeners for filters
-        searchInput.addEventListener('input', function () {
+        searchInput.addEventListener('input', function() {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        branchFilter.addEventListener('change', function () {
+        branchFilter.addEventListener('change', function() {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        cityFilter.addEventListener('change', function () {
+        cityFilter.addEventListener('change', function() {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        progressFilter.addEventListener('change', function () {
+        progressFilter.addEventListener('change', function() {
             currentPage = 1;
             const filteredData = filterTableData();
             updateTableDisplay(filteredData);
         });
 
-        itemsPerPageSelect.addEventListener('change', function () {
+        itemsPerPageSelect.addEventListener('change', function() {
             itemsPerPage = parseInt(this.value);
             currentPage = 1;
             const filteredData = filterTableData();
@@ -628,7 +628,7 @@
         });
 
         // Pagination buttons
-        document.getElementById('prevPage').addEventListener('click', function () {
+        document.getElementById('prevPage').addEventListener('click', function() {
             if (currentPage > 1) {
                 currentPage--;
                 const filteredData = filterTableData();
@@ -636,7 +636,7 @@
             }
         });
 
-        document.getElementById('nextPage').addEventListener('click', function () {
+        document.getElementById('nextPage').addEventListener('click', function() {
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
             if (currentPage < totalPages) {
                 currentPage++;
@@ -649,14 +649,13 @@
         populateFilterOptions();
         updateTableDisplay(tableData);
     });
-
 </script>
 <script>
     // Toggle filters visibility on mobile
     const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
     const filterContainer = document.getElementById("filterContainer");
 
-    toggleFiltersBtn.addEventListener('click', function () {
+    toggleFiltersBtn.addEventListener('click', function() {
         filterContainer.classList.toggle('hidden');
     });
 
@@ -744,20 +743,20 @@
     }
 
     // Handle file input change
-    document.getElementById('dropzone-file').addEventListener('change', function (e) {
+    document.getElementById('dropzone-file').addEventListener('change', function(e) {
         handleFileSelection(e.target.files[0]);
     });
 
     // Handle drag-and-drop functionality
     const dropzone = document.querySelector('label[for="dropzone-file"]');
-    dropzone.addEventListener('dragover', function (e) {
+    dropzone.addEventListener('dragover', function(e) {
         e.preventDefault(); // Allow drop
         dropzone.classList.add('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('dragleave', function () {
+    dropzone.addEventListener('dragleave', function() {
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
     });
-    dropzone.addEventListener('drop', function (e) {
+    dropzone.addEventListener('drop', function(e) {
         e.preventDefault();
         dropzone.classList.remove('bg-gray-100', 'dark:bg-gray-700');
         const file = e.dataTransfer.files[0];
@@ -796,9 +795,9 @@
 
         // Example AJAX request (Modify endpoint as needed)
         fetch('/your-upload-endpoint', {
-            method: 'POST',
-            body: formData
-        })
+                method: 'POST',
+                body: formData
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -813,6 +812,32 @@
                 alert('Failed to upload file');
             });
     }
+
+    // upload file
+    function closeModal() {
+        document.getElementById('uploadFileModal').classList.add('hidden');
+        // reset label
+        document.getElementById('fileNameText').textContent = 'Click to upload';
+        document.getElementById('fileError').classList.add('hidden');
+        document.getElementById('uploadForm').reset();
+    }
+
+    // Optional: validasi ekstensi sebelum submit
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        const input = document.getElementById('dropzone-file');
+        if (!input.files.length) {
+            e.preventDefault();
+            document.getElementById('fileError').textContent = 'Silakan pilih file terlebih dahulu.';
+            document.getElementById('fileError').classList.remove('hidden');
+            return;
+        }
+        const ext = input.files[0].name.split('.').pop().toLowerCase();
+        if (!['xlsx', 'xls', 'csv'].includes(ext)) {
+            e.preventDefault();
+            document.getElementById('fileError').textContent = 'Format tidak valid. (.xlsx, .xls, .csv saja)';
+            document.getElementById('fileError').classList.remove('hidden');
+        }
+    });
 </script>
 
 </body>
